@@ -20,14 +20,14 @@
                 "",
                 "10000"
             };
-        static int max_calorie = int.MinValue;
         static void Main(string[] args)
         {
-            part1();
+            part2();
         }
 
         static void part1()
         {
+            int max_calorie = int.MinValue;
             var lines = File.ReadAllLines("..\\..\\..\\input1.txt");
             int sum = 0;
             foreach(var line in lines)
@@ -44,6 +44,29 @@
             }
             max_calorie = max_calorie < sum ? sum : max_calorie;
             Console.WriteLine($"Maximum Calories: {max_calorie}");
+        }
+
+        static void part2()
+        {
+            List<int> elfs = new List<int>();
+            var lines = File.ReadAllLines("..\\..\\..\\input1.txt");
+            int sum = 0; 
+            foreach(var line in lines)
+            {
+                if (line != string.Empty)
+                {
+                    sum += int.Parse(line);
+                }
+                else
+                {
+                    elfs.Add(sum);
+                    sum = 0;
+                }
+            }
+            elfs.Sort();
+
+            int sumOfTopThree = elfs.TakeLast(3).Sum();
+            Console.WriteLine($"Calories of top three:{sumOfTopThree}");
         }
     }
 }
