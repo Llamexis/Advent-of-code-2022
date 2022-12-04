@@ -37,7 +37,8 @@ foreach (var line in input)
     int[] secondElf = { Convert.ToInt32(line.Split(',')[1].Split('-')[0]),
                       Convert.ToInt32(line.Split(',')[1].Split('-')[1])
     };
-    var maxRange = Math.Max(firstElf[1], secondElf[1]) - Math.Min(firstElf[0], secondElf[0]);
+    var maxRange = Math.Max(firstElf[1], secondElf[1]) 
+        - Math.Min(firstElf[0], secondElf[0]);
     var firstRange = firstElf[1] - firstElf[0];
     var secondRange = secondElf[1] - secondElf[0];
     if (maxRange <= firstRange + secondRange) 
