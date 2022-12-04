@@ -14,13 +14,36 @@ string[] test =
 int pairs = 0;
 foreach(var line in input)
 {
-    var firstElf = line.Split(',')[0].Split('-');
-    var secondElf = line.Split(',')[1].Split('-');
-    if (Convert.ToInt32(firstElf[0]) <= Convert.ToInt32(secondElf[0]) 
-        && Convert.ToInt32(firstElf[1]) >= Convert.ToInt32(secondElf[1]))
+    int[] firstElf = { Convert.ToInt32(line.Split(',')[0].Split('-')[0]),
+                     Convert.ToInt32(line.Split(',')[0].Split('-')[1])
+    };
+    int[] secondElf = { Convert.ToInt32(line.Split(',')[1].Split('-')[0]),
+                      Convert.ToInt32(line.Split(',')[1].Split('-')[1])
+    }; 
+    if (firstElf[0] <= secondElf[0] && firstElf[1] >= secondElf[1])
         pairs++;
-    else if (Convert.ToInt32(secondElf[0]) <= Convert.ToInt32(firstElf[0])
-        && Convert.ToInt32(secondElf[1]) >= Convert.ToInt32(firstElf[1]))
+    else if (secondElf[0] <= firstElf[0] && secondElf[1] >= firstElf[1])
         pairs++;
 }
 Console.WriteLine("Number of pairs: "+pairs);
+
+// part 2
+pairs = 0;
+foreach (var line in input)
+{
+    int[] firstElf = { Convert.ToInt32(line.Split(',')[0].Split('-')[0]),
+                     Convert.ToInt32(line.Split(',')[0].Split('-')[1])
+    };
+    int[] secondElf = { Convert.ToInt32(line.Split(',')[1].Split('-')[0]),
+                      Convert.ToInt32(line.Split(',')[1].Split('-')[1])
+    };
+    for(int i = firstElf[0]; i <= firstElf[1];i++)
+    {
+        if (secondElf[0] <= i && i <= secondElf[1])
+        {
+            pairs++;
+            break;
+        }
+    }
+}
+Console.WriteLine("Number of pairs: " + pairs);
