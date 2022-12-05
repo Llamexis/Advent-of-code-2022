@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-
-// Parsing Input
+﻿// Parsing Input
 List<Stack<char>> stacks = new List<Stack<char>>();
 string[] InputParse(ref List<Stack<char>> stacks)
 { 
@@ -41,7 +38,7 @@ foreach(var stack in stacks)
 Console.WriteLine();
 
 stacks.Clear();
-input = InputParse(ref stacks);
+InputParse(ref stacks);
 //part 2
 for (int i = 10; i < input.Length; i++)
 {
