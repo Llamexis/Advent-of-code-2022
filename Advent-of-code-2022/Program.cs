@@ -1,4 +1,6 @@
-﻿var input = File.ReadAllLines("..\\..\\..\\input.txt");
+﻿using System.Security.Cryptography.X509Certificates;
+
+var input = File.ReadAllLines("..\\..\\..\\input.txt");
 
 // Parsing Input
 
@@ -20,3 +22,18 @@ for(int i = 7; i >= 0; i--)
 }
 
 // Part 1
+for(int i=10; i < input.Length; i++)
+{
+    var values = input[i].Split(" ");
+    int[] ints = { int.Parse(values[1]), int.Parse(values[3]), int.Parse(values[5]) };
+    for(int j =0; j < ints[0]; j++)
+    {
+        char res;
+        stacks[ints[1]-1].TryPop(out res);
+        stacks[ints[2]-1].Push(res);
+    }
+}
+Console.Write("Messege Part 1: ");
+foreach(var stack in stacks)
+    Console.Write(stack.Pop());
+Console.WriteLine();
