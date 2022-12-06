@@ -1,8 +1,25 @@
 ﻿var input = File.ReadAllText("input.txt");
 
 // part 1
-var firstSeq = input.Chunk(4)
-    .ToArray()
-    .Select((str, index) => new { str, index })
-    .First(x=>x.str.Distinct().Count() == 4);
-Console.WriteLine(firstSeq.index * 4+1);
+//Lucky solution
+//because doesn't check every posible sequence
+int index = 0;
+while (index < input.Length)
+{
+    var seq = input.Substring(index, 4);
+    if (seq.ToCharArray().Distinct().Count() == 4)
+        break;
+    index++;
+}
+Console.WriteLine("Part 1: " + (index+4));
+
+// part 2
+index = 0;
+while (index < input.Length )
+{
+    var seq = input.Substring(index, 14);
+    if(seq.ToCharArray().Distinct().Count() == 14)
+        break;
+    index++;
+}
+Console.WriteLine("Part 2: " + (index + 14));
