@@ -7,37 +7,56 @@ root.type = "dir";
 root.name = "/";
 root.size = 0;
 Stack<Node> cwd = new Stack<Node>();
+var list = new List<int>();
 cwd.Push(root);
 int sum = 0;
-
+int limit;
 //  Parsing Input
 ParseInput(ref root);
 
 // Counting Sizes in Tree
-CountSize(root, 100000, ref sum);
+root.size = CountSize(root, 100000, ref sum);
+
+limit = 30000000 - (70000000 - root.size);
 
 //  Result of Part 1
 Console.WriteLine("Part 1: " + sum);
 
+toArray(root);
 
+
+//  Result of Part 2
+Console.WriteLine("Part 2: " + list.Min());
 
 
 //  Declarations and Definitions
-int CountSize(Node root, int searchSize, ref int sum)
+
+void toArray(Node root)
+{
+    for (int i = 0; i < root.children.Count; i++)
+    {
+        if (root.children[i].type == "dir" && limit <= root.children[i].size)
+            list.Add(root.children[i].size);
+        toArray(root.children[i]);
+        
+    }
+}
+int CountSize(Node root, int searchSize, ref int sum) // DFS
 {
     int size = 0;
-    
-    foreach(Node node in root.children)
+    for(int i=0; i < root.children.Count; i++)
     {
+        Node node = root.children[i];
         if (node.type == "file")
-            size += node.size;
+            root.size += node.size;
         else if (node.type == "dir")
         {
-            size += CountSize(node, searchSize, ref sum);
+            node.size = CountSize(node,searchSize,ref sum);
+            root.size += node.size;
         }
+        root.children[i] = node;
     }
-
-    root.size= size;
+    size = root.size;
     if (size <= searchSize)
         sum += size;
     return size;
