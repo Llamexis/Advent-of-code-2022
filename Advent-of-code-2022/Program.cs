@@ -23,7 +23,6 @@ for(int i=0; i<input.Length; i++)
         bool down= CountVisible(j, i, 0, 1, input[i][j]);
         if (up || down || left || right)
             visible++;
-        Console.WriteLine();
     }
 }
 
