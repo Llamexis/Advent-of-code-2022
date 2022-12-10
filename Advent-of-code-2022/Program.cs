@@ -19,7 +19,6 @@ var dist = ((int, int) a, (int, int) b) => (a.Item1 - b.Item1, a.Item2 - b.Item2
 knots.Initialize();
 
 List<(int, int)> posT = new List<(int, int)>();
-posT.Add(knots[0]);
 
 foreach(var com in inputTest)
 {
@@ -33,13 +32,13 @@ foreach(var com in inputTest)
             _ => (-1, 0)
 
         };
-        knots[0] = add(knots[1],dir);
+        knots[1] = add(knots[1], dir);
         var dis = dist(knots[0], knots[1]);
         if(Math.Abs(dis.Item1)>1 || Math.Abs(dis.Item2) > 1)
         {
-            knots[1] = add(knots[0], (Math.Sign(dis.Item1),Math.Sign(dis.Item2)));
+            knots[0] = add(knots[1], (Math.Sign(dis.Item1), Math.Sign(dis.Item2)));
         }
-        posT.Add(knots[1]);
+        posT.Add(knots[0]);
     }
 }
 
