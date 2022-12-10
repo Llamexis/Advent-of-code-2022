@@ -1,1 +1,1 @@
-﻿Console.WriteLine("Hello, World!");
+﻿var input = File.ReadAllLines("input.txt");
