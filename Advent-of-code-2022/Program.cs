@@ -1,14 +1,13 @@
-﻿using System.Runtime.ConstrainedExecution;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 var monkes = InputParser("input.txt");
 long mod = 1;
 foreach (Monke monke in monkes)
     mod *= monke.divider;
-monkePlay(ref monkes, 20, 3,mod);
+monkePlay(ref monkes, 20, 3, mod);
 
 
-monkes.Sort(delegate(Monke x, Monke y) 
+monkes.Sort(delegate (Monke x, Monke y)
 {
     if (x.numberOfInspects > y.numberOfInspects)
         return 0;
@@ -16,13 +15,13 @@ monkes.Sort(delegate(Monke x, Monke y)
         return 1;
 });
 
-monkes.Sort((Monke a,Monke b) => a.numberOfInspects.CompareTo(b.numberOfInspects));
+monkes.Sort((Monke a, Monke b) => a.numberOfInspects.CompareTo(b.numberOfInspects));
 var res = monkes.TakeLast(2).ToArray();
-Console.WriteLine("Part 1: "+(res[0].numberOfInspects * res[1].numberOfInspects));
+Console.WriteLine("Part 1: " + (res[0].numberOfInspects * res[1].numberOfInspects));
 
 monkes = InputParser("input.txt");
 
-monkePlay(ref monkes, 10000,1,mod);
+monkePlay(ref monkes, 10000, 1, mod);
 
 monkes.Sort(delegate (Monke x, Monke y)
 {
@@ -38,19 +37,20 @@ List<Monke> InputParser(string path)
 {
     var result = new List<Monke>();
     var input = File.ReadAllLines(path);
-    for(int i = 0; i < input.Length;i++)
+    for (int i = 0; i < input.Length; i++)
     {
         if (!input[i].StartsWith("Monkey"))
             continue;
 
         var regex = new Regex("\\d+");
-        var items = regex.Matches(input[i+1]).Select(x=>long.Parse(x.Value)).ToList();
+        var items = regex.Matches(input[i + 1]).Select(x => long.Parse(x.Value)).ToList();
         var divider = int.Parse(regex.Match(input[i + 3]).Value);
         var True = int.Parse(regex.Match(input[i + 4]).Value);
         var False = int.Parse(regex.Match(input[i + 5]).Value);
         regex = new Regex("(new = old [+*] )(\\d+|old)");
-        var op = regex.Match(input[i+2]).Value;
-        var m = new Monke {
+        var op = regex.Match(input[i + 2]).Value;
+        var m = new Monke
+        {
             items = items,
             operation = op,
             divider = divider,
@@ -115,8 +115,8 @@ class Monke
     public int True { get; set; }
     public int False { get; set; }
     public long numberOfInspects = 0;
-    public Monke() 
-    { 
+    public Monke()
+    {
         items = new List<long>();
     }
 }
