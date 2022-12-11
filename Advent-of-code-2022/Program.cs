@@ -1,49 +1,13 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Runtime.ConstrainedExecution;
+using System.Text.RegularExpressions;
 
 var monkes = InputParser("input.txt");
-const int ROUNDS = 20;
+long mod = 1;
+foreach (Monke monke in monkes)
+    mod *= monke.divider;
+monkePlay(ref monkes, 20, 3,mod);
 
-for(int round=0; round<ROUNDS; round++)
-{
-    for(int index=0; index < monkes.Count();index++)
-    {
-   
-        if (monkes[index].items.Count() == 0)
-            continue;
-        string op = monkes[index].operation.Split(" ")[3];
-        foreach (var item in monkes[index].items)
-        {
-            int tmp;
-            switch (op)
-            {
-                case "+":
-                    {
-                        tmp = item + int.Parse(monkes[index].operation.Split(" ")[4]);
-                        break;
-                    }
-                case "*":
-                    {
-                        if (monkes[index].operation.Split(" ")[4] == "old")
-                            tmp = item * item;
-                        else
-                            tmp = item * int.Parse(monkes[index].operation.Split(" ")[4]);
-                        break;
-                    }
-                default:
-                    throw new Exception("Oh no");
-            }
 
-            double relief = (double)(tmp / 3);
-            tmp = (int)Math.Round(relief);
-            if (tmp % monkes[index].divider == 0)
-                monkes[monkes[index].True].items.Add(tmp);
-            else
-                monkes[monkes[index].False].items.Add(tmp);
-            monkes[index].numberOfInspects++;
-        }
-        monkes[index].items.Clear();
-    }
-}
 monkes.Sort(delegate(Monke x, Monke y) 
 {
     if (x.numberOfInspects > y.numberOfInspects)
@@ -54,8 +18,22 @@ monkes.Sort(delegate(Monke x, Monke y)
 
 monkes.Sort((Monke a,Monke b) => a.numberOfInspects.CompareTo(b.numberOfInspects));
 var res = monkes.TakeLast(2).ToArray();
-Console.WriteLine(res[0].numberOfInspects * res[1].numberOfInspects);
+Console.WriteLine("Part 1: "+(res[0].numberOfInspects * res[1].numberOfInspects));
 
+monkes = InputParser("input.txt");
+
+monkePlay(ref monkes, 10000,1,mod);
+
+monkes.Sort(delegate (Monke x, Monke y)
+{
+    if (x.numberOfInspects > y.numberOfInspects)
+        return 0;
+    else
+        return 1;
+});
+monkes.Sort((Monke a, Monke b) => a.numberOfInspects.CompareTo(b.numberOfInspects));
+res = monkes.TakeLast(2).ToArray();
+Console.WriteLine("Part 2: " + (res[0].numberOfInspects * res[1].numberOfInspects));
 List<Monke> InputParser(string path)
 {
     var result = new List<Monke>();
@@ -66,7 +44,7 @@ List<Monke> InputParser(string path)
             continue;
 
         var regex = new Regex("\\d+");
-        var items = regex.Matches(input[i+1]).Select(x=>int.Parse(x.Value)).ToList();
+        var items = regex.Matches(input[i+1]).Select(x=>long.Parse(x.Value)).ToList();
         var divider = int.Parse(regex.Match(input[i + 3]).Value);
         var True = int.Parse(regex.Match(input[i + 4]).Value);
         var False = int.Parse(regex.Match(input[i + 5]).Value);
@@ -83,16 +61,62 @@ List<Monke> InputParser(string path)
     }
     return result;
 }
+void monkePlay(ref List<Monke> monkeList, int ROUNDS, int div, long mod)
+{
+    for (int round = 0; round < ROUNDS; round++)
+    {
+        for (int index = 0; index < monkes.Count(); index++)
+        {
+
+            if (monkes[index].items.Count() == 0)
+                continue;
+            string op = monkes[index].operation.Split(" ")[3];
+            foreach (var item in monkes[index].items)
+            {
+                long tmp;
+                switch (op)
+                {
+                    case "+":
+                        {
+                            tmp = item + int.Parse(monkes[index].operation.Split(" ")[4]);
+                            break;
+                        }
+                    case "*":
+                        {
+                            if (monkes[index].operation.Split(" ")[4] == "old")
+                                tmp = item * item;
+                            else
+                                tmp = item * int.Parse(monkes[index].operation.Split(" ")[4]);
+                            break;
+                        }
+                    default:
+                        throw new Exception("Oh no");
+                }
+
+                tmp = tmp / div % mod;
+                if (tmp % monkes[index].divider == 0)
+                    monkes[monkes[index].True].items.Add(tmp);
+                else
+                    monkes[monkes[index].False].items.Add(tmp);
+                monkes[index].numberOfInspects++;
+            }
+            monkes[index].items.Clear();
+        }
+    }
+}
+
+
+
 class Monke
 {
-    public List<int> items { get; set; }
+    public List<long> items { get; set; }
     public string? operation { get; set; }
     public int divider { get; set; }
     public int True { get; set; }
     public int False { get; set; }
-    public int numberOfInspects = 0;
+    public long numberOfInspects = 0;
     public Monke() 
     { 
-        items = new List<int>();
+        items = new List<long>();
     }
 }
