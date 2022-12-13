@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Nodes;
 
 int Compare(JsonNode a, JsonNode b)
 {
@@ -18,4 +19,12 @@ var parse = from x in input.Split("\r\n")
 var res1 = parse.Chunk(2)
     .Select((pair, idx) => Compare(pair[0], pair[1]) < 0 ? idx+1 : 0)
     .Sum();
+
+var divider = (from x in "[[2]]\n[[6]]".Split('\n')
+              select JsonNode.Parse(x)).ToList();
+
+var tmp = parse.Concat(divider).ToList();
+tmp.Sort(Compare);
+var res2 = (tmp.IndexOf(divider[0]) + 1) * (tmp.IndexOf(divider[1]) + 1); 
 Console.WriteLine("Part 1: "+res1);
+Console.WriteLine("Part 2: "+res2);
