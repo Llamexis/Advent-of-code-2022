@@ -18,14 +18,7 @@ var numOfSand = HateSandItsCoughAndRoughAndIrritating(grid,false);
 Console.WriteLine("Part 1: " + numOfSand);
 grid = Fill(input, lines,true);
 numOfSand = HateSandItsCoughAndRoughAndIrritating(grid,true);
-for (int i = 0; i < grid.GetLength(0); i++)
-{
-    for (int j = 450; j < grid.GetLength(1) - 400; j++)
-    {
-        Console.Write(grid[i, j]);
-    }
-    Console.WriteLine();
-}
+
 Console.WriteLine($"Part 2: {numOfSand}");
 
 char[,] Fill(string[] input, List<List<(int x, int y)>> lines,bool IsFloor)
